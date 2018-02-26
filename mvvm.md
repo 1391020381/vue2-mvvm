@@ -8,7 +8,7 @@
    2. 模板引擎(模板引擎会把一个html片断最终解析成一个JS函数,让它真正动起来
    )
    3. 虚拟DOM(ViewModel不会直接操作dom而是把所有的DOM操作都一股脑塞给vdom,，vdom 进行 diff 之后，再决定要真正修改哪些 DOM 节点)
- # 响应式   
+ # 响应式[深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html)  
    1. Object.defineProperty(obj, prop, descriptor)只能某个对象的单个属性
    2. 数组的变化监听(直接修改要监听的数组的原型,不是 Array.prototype)
       ```
@@ -48,4 +48,7 @@
           favoriteColor: 'Vue Green'
         })
         ```
-          
+   # 模板解析 
+     1. 结构化解析
+     2. 要生成vdom
+     3. 渲染为页面     
