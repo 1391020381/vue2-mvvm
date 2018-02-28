@@ -50,5 +50,12 @@
         ```
    # 模板解析 
      1. 结构化解析
+          *  生成AST,
+          * 优化AST找到最大静态子树<标记最大静态子树的用意：根据MVVM的交互方式,Model的数据修改要同时修改View,那些View中和Model没有关系的部分,就没有必要随着Model的变化而修改。提高效率。
      2. 要生成vdom
-     3. 渲染为页面     
+     3. 渲染为页面 
+  # 虚拟DOM
+   * 围绕着 vdom来介绍View的渲染,包括View的渲染和更新、以及响应式如何触发这种更新机制。
+   ## vdom的基本使用
+   * 浏览器中解析 html会生成DOM树,它是由一个一个的node节点组成。同理，vdom也是由一个一个的vnode组成。vdom、vnode都是用js对象的方式来模拟真实的DOM或者node.
+   * 生成新的vnode,然后 patch(vnode,newVnode),会使用diff算法出对比vnode和newVnode,比对两者的区别,最后渲染真实DOM时候,只会将有区别的部分重新渲染。           
