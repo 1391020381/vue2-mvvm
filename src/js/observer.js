@@ -28,3 +28,22 @@ function defineReactive (data, key, val) {
     }
   })
 }
+
+/**
+ * 消息订阅器,维护一个数组，用来收集订阅者,数据变动触发notify,再调用订阅者的update方法
+ * **/
+
+function Dep () {
+  this.subs = []
+}
+
+Dep.prototype = {
+  addSub: function (sub) {
+    this.subs.push(sub)
+  },
+  notify: function () {
+    this.subs.forEach(sub => {
+      sub.update()
+    })
+  }
+}
