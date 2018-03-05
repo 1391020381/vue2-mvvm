@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>MVVM</title>
+</head>
+<body>
+<div id="mvvm-app">
+  <input type="text" v-model="someStr">
+  <input type="text" v-model="child.someStr">
+  <p>{{getHelloWord}}</p>
+  <p v-html="child.htmlStr"></p>
+  <button v-on:click="clickBtn">change model</button>
+</div>
+<script src="./js/observer.js"></script>
+<script src="./js/watcher.js"></script>
+<script src="./js/compile.js"></script>
+<script src="./js/mvvm.js"></script>
+<script>
+  var vm = new MVVM({
+    el: '#mvvm-app',
+    data: {
+      someStr: 'hello',
+      className: 'btn',
+      htmlStr: `<span style="color:#foo;"></span>`,
+      child: {
+        someStr: 'World!'
+      },
+      computed: {
+        getHelloWorld: function () {
+          return this.someStr + this.child.someStr
+        }
+      },
+      methods: {
+        clickBtn: function (e) {
+          var randomeStrArr = ['cildOne', 'childTwo', 'childThree']
+          this.cild.someStr = randomeStrArr[parseInt(Math.random() * 3)]
+        }
+      }
+    }
+  })
+  vm.$watch('child.someStr', function () {
+    console.log(arguments);
+  });
+</script>
+</body>
+</html>
