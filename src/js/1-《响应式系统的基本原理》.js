@@ -47,3 +47,8 @@ let o = new Vue({
   }
 })
 o._data.test = 'hello,test'
+
+/**
+ *   1. 定义一个 Vue类 在 constructor中对传入的参数 使用 observer
+ *   2. observer函数的作用就是，给传入的对象的每个属性添加  Object.defineProperty,并在 set中值更新的时候，执行回调函数
+ * **/

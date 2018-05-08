@@ -39,22 +39,27 @@ function defineReactive (obj, key, val) {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
-      dep.addSub(Dep.target)   // 在 Watcher 方法中
+      if (Dep.target) {  // 全局的 Dep 对象  在 初始化 Watcher实例的时候,把 Dep.target 赋值为 Watcher的实例<全局唯一>
+        dep.addSub(Dep.target)
+        console.log('get-value')
+      }
       return val
     },
     set: function reactiveSetter (newVal) {
       if (newVal === val) return
       dep.notify()
+      console.log('set-value')
     }
   })
 }
+
 
 class Vue {
   constructor (options) {
     this._data = options.data
     observer(this._data)
-    new Watcher()
-    console.log('render!', this._data.test)
+    new Watcher()   // 全局的 Watcher实例
+    console.log('render!', this._data.test)     // 这个 this._data.test  会触发 get
   }
 }
 
