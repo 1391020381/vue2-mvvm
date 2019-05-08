@@ -95,3 +95,23 @@ Object.defineProperty(me,key,{
 * dep.notify    sub.update()
 * sub 是 watcher实例    其实就是执行绑定的回调函数
 
+
+
+* 不同地方 this的 指向
+* ```
+Dep.prototype = {
+  Dep.target.addDep(this)   this   Dep 实例    compile阶段 实例化 Watcher 触发 this.get()  会触发 observer  Object.defineProperty get 实际上是 调用 Watcher的 addDep方法并传入 Dep实例。  addDep中 使用 传入的 dep 依赖收集 添加watcher对象    Object.defineProperty set 时触发  dep.notify()实际就是触发 watcher回调
+}
+
+
+Watcher.prototype = {
+  addDep:function(dep){
+    if(!this.depIds.hasOwnProperty(dep.id)){
+      dep.addSub(this)    this   Watcher 实例
+      this.depIds[dep.id] = dep
+    }
+  }
+}
+```
+
+
