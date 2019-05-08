@@ -22,7 +22,7 @@ Observer.prototype = {
       enumerable:true,
       configurable:false,
       get:function(){
-        if(Dep.target){
+        if(Dep.target){  // Dep.target有值 收集依赖
           dep.depend();
         }
         return val;
@@ -56,7 +56,7 @@ Dep.prototype = {
   addSub:function(sub){
     this.subs.push(sub);
   },
-  depend:function(){
+  depend:function(){ // 
     Dep.target.addDep(this);
   },
   removeSub:function(sub){

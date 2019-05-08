@@ -29,7 +29,9 @@ Compile.prototype = {
 
     })
   },
-  CompileText:function(node,exp){},
+  CompileText:function(node,exp){
+
+  },
   isDirective:function(attr){
     return attr.indexOf('v-') === 0;
   },
@@ -43,3 +45,40 @@ Compile.prototype = {
     return node.nodeType ==3
   }
 }
+
+var compileUtil = {
+  text:function(node,vm,exp){
+    this.bind(node,vm,exp,'text')
+  },
+  html:function(node,vm,exp){
+    this.bind(node,vm,exp,'html')
+  },
+  model:function(node,vm,exp){
+    this.bind(node,vm,exp,'model')
+    var me = this
+    
+  },
+  class:function(node,vm,exp){
+    this.bind(node,vm,exp,'class')
+  },
+  bind:function(node,vm,exp,dir){
+    var updaterFn = updaterFn[dir+'Updater']
+    updaterFn && updaterFn(node,this._getVMVAL(vm,exp))
+  },
+  eventHandler:function(node,vm,exp,dir){
+    var eventType = dir.split(':')[1]
+    var fn = vm.$options.methods&&vm.$options.methods[exp]
+    if(eventType && fn){
+      node.addEventListener(eventType,fn.bind(vm),false)
+    }
+  },
+  _getVMVAL:function(vm,exp){
+      var val = vm
+      var exp = exp.split('.')
+      exp.forEach(function(k){
+        val = val[k]
+      })
+  }
+}
+
+
