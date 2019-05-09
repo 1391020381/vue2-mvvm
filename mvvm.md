@@ -98,7 +98,8 @@ Object.defineProperty(me,key,{
 
 
 * 不同地方 this的 指向
-* ```
+* 
+ ```
 Dep.prototype = {
   Dep.target.addDep(this)   this   Dep 实例    compile阶段 实例化 Watcher 触发 this.get()  会触发 observer  Object.defineProperty get 实际上是 调用 Watcher的 addDep方法并传入 Dep实例。  addDep中 使用 传入的 dep 依赖收集 添加watcher对象    Object.defineProperty set 时触发  dep.notify()实际就是触发 watcher回调
 }
@@ -112,6 +113,25 @@ Watcher.prototype = {
     }
   }
 }
-```
+ ```
 
+* diff算法是通过同层的树节点进行比较而非对树进行逐层搜索遍历的方式，所以时间复杂度只有O(n),是一种相当高效的算法。
+* Vue.js修改视图的过程: setter -> Dep -> Watcher -> patch -> 视图
+* 因为目前浏览器平台并没有实现 nextTick 方法,所以Vue.js源码分别用 Promise、 setTimeout setTmmediate等方式在 microtask中创建一个事件,目的是在当前调用栈执行完毕以后(不一定立即)才会出执行这个事件。
+
+
+# nextTick原理
+
+* queue waiting has
+* callbacks pending
+
+
+1. 先实例化  Watcher   触发 watcher.update
+2. watcher.update 中执行 queueWatcher(this)
+3. queueWatcher(watcher) 
+* 使用has[id] 判断 添加到 queue 中
+* waiting 为 false  执行 ,    nextTick(flushSchedulerQueue) 执行前 waiting = true
+4. nextTick(flushSchedulerQueue) 把 flushSchedulerQueue推入 callbacks   pending 为 false 执行 setTimeout(flushCallbacks)
+5. flushCallbacks 执行回调函数
+* 
 
